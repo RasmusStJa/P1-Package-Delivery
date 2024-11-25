@@ -1,0 +1,3 @@
+C:/Users/rasmu/CLionProjects/P1-Package-Delivery/cmake-build-debug/CMakeFiles/P1_Package_Delivery.dir
+C:/Users/rasmu/CLionProjects/P1-Package-Delivery/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/rasmu/CLionProjects/P1-Package-Delivery/cmake-build-debug/CMakeFiles/rebuild_cache.dir
