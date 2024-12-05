@@ -45,7 +45,7 @@ int dist[MAX_LOCATIONS][MAX_LOCATIONS] ={
 int dp[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //ABD: array, der gemmer de mindste omkostninger. RAS: det er vel en matrix?
 int n = MAX_LOCATIONS; //ABD: Beregner , som bruges til at repræsentere alle mulige undergrupper af lokationer.
 
-int tsp_jin(int mask, int pos) {
+int tsp_abd(int mask, int pos) {
 
     if (mask == (1 << n) - 1) {
         return dist[pos][0];
@@ -60,7 +60,7 @@ int tsp_jin(int mask, int pos) {
 
     for (int city = 0; city < n; city++) {
         if (!(mask & (1 << city))) {
-            int newAns = dist[pos][city] + tsp_jin(mask | (1 << city),
+            int newAns = dist[pos][city] + tsp_abd(mask | (1 << city),
             city);
             if (newAns < ans) {
                 ans = newAns;
@@ -79,7 +79,7 @@ int main() {
         }
     }
     // Step 2.
-    int result = tsp_jin(1, 0);
+    int result = tsp_abd(1, 0);
     printf("The shortest path has cost: %d\n", result);
     return 0;
 }

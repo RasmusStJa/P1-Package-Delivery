@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <limits.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
+#define LINE_LENGTH 64
 #define MAX_LOCATIONS 20 //ABD: Jeg har taget udgangspunkt i eksemplet, som består af 4 lokationer, dette skal ændres når matri
 #define INF INT_MAX
 /*ABD:
@@ -8,18 +12,8 @@
  *Det bruges til at repræsentere "uendelig", når en sti ikke er
  *mulig. */
 
-//ABD: Definerer en matrix, hvor dist[i][j] repræsenterer afstanden mellem lokation i og j.
-//ABD: HUSK DEN FØRSTE ROW OG COLUMN ER ROW 0 OG COLUMN 0
-/*
-int dist[MAX_LOCATIONS][MAX_LOCATIONS] = {
-    {0, 1, 15, 6},
-    {2, 0, 7, 3},
-    {9, 6, 0, 12},
-    {10, 4, 8, 0}
-};
-*/
 //RAS: example of a size 20 matrix (completely random numbers though)
-int dist[MAX_LOCATIONS][MAX_LOCATIONS] ={
+int dist[20][20] ={
     {0, 2, 5, 12,10,15,12,5, 7, 8, 8, 6, 9, 5, 14,11,14,4, 3, 3},
     {2, 0, 4, 9, 15,13,12,15,5, 5, 6, 9, 11,4, 5, 2, 14,6, 1, 13},
     {7, 8, 0, 3, 4, 12,4, 1, 6, 9, 5, 5, 12,3, 11,8, 10,12,15,9},
@@ -39,13 +33,14 @@ int dist[MAX_LOCATIONS][MAX_LOCATIONS] ={
     {4, 15,11,4, 4,14, 1, 9, 6, 2, 11,15,1, 9, 6, 3, 0, 11,7, 1},
     {10,14,14,15,6, 7, 14,5, 6, 8, 6, 6, 6, 14,2, 12,15,0, 15,6},
     {13,2, 8, 12,13,14,6, 15,11,9, 7, 15,4, 5, 6, 15,15,14,0, 8},
-    {3, 3, 9, 3, 15,4, 9, 12,9, 13, 6, 2, 13,6, 9,13,12,11,9 ,0}
+    {3, 3, 9, 3, 15,4, 9, 12,9, 13,6, 2, 13,6, 9, 13,12,11,9 ,0}
 };
 
-int dp[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //ABD: array, der gemmer de mindste omkostninger. RAS: det er vel en matrix?
+
+int dp[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //ABD: array, der gemmer de mindste omkostninger.
 int n = MAX_LOCATIONS; //ABD: Beregner , som bruges til at repræsentere alle mulige undergrupper af lokationer.
 
-int tsp_jin(int mask, int pos) {
+int tsp_abd(int mask, int pos) {
 
     if (mask == (1 << n) - 1) {
         return dist[pos][0];
@@ -57,10 +52,9 @@ int tsp_jin(int mask, int pos) {
 
     int ans = INF;
 
-
     for (int city = 0; city < n; city++) {
         if (!(mask & (1 << city))) {
-            int newAns = dist[pos][city] + tsp_jin(mask | (1 << city),city);
+            int newAns = dist[pos][city] + tsp_abd(mask | (1 << city),city);
             if (newAns < ans) {
                 ans = newAns;
             }
@@ -78,7 +72,7 @@ int main() {
         }
     }
     // Step 2.
-    int result = tsp_jin(1, 0);
+    int result = tsp_abd(1, 0);
     printf("The shortest path has cost: %d\n", result);
     return 0;
 }
