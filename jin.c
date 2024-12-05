@@ -55,7 +55,7 @@ int tsp_jin(int ncity, int pos)
     for(int city=0; city<n; city++){
 
         //JIN: Tjekker om byen allerede er besøgt
-        if((ncity&(1<<city))==0){
+        if(!(ncity&(1<<city))==0){
             //JIN: Hvis byen ikke er besøgt så:
             int newAns = dist[pos][city] + tsp_jin(ncity|(1<<city),city);
             ans = min(ans,newAns);
