@@ -71,7 +71,7 @@ int main() {
             dp[i][j] = -1;
         }
     }
-    // Step 2.
+    //ABD: Step 2.
     int result = tsp_abd(1, 0);
     printf("The shortest path has cost: %d\n", result);
     return 0;
