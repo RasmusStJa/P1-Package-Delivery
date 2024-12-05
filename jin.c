@@ -30,7 +30,7 @@ int tsp(int ncity, int pos)
             //Hvis byen ikke er besøgt så:
             int newAns = dist[pos][city] +
             tsp(ncity|(1<<city),city);
-            ans = min(ans,newAns);
+            ans = min(ans,newAns);  //TODO: RASMUS: min skal defineres
         }
     }
     //Returner den mindste omkostning
