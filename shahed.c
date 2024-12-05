@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <limits.h>
 
-#define MAX 20 // Maximum number of nodes
+#define MAX 20 //SHA: Maximum number of nodes
 #define INF INT_MAX
-int n; // Number of nodes
-int matrix[MAX][MAX]; // Adjacency matrix for distances
-int memoization[1 << MAX][MAX]; // DP table for memoization
-// Function to initialize the memoization table
+int n; //SHA: Number of nodes
+int matrix[MAX][MAX]; //SHA: Adjacency matrix for distances
+int memoization[1 << MAX][MAX]; //SHA: DP table for memoization
+//SHA: Function to initialize the memoization table
 void initialize_memoization() {
     for (int i = 0; i < (1 << n); i++) {
         for (int j = 0; j < n; j++) {
@@ -14,19 +14,19 @@ void initialize_memoization() {
         }
     }
 }
-// Function to find the minimum cost of visiting all nodes
+//SHA: Function to find the minimum cost of visiting all nodes
 int held_karp(int visited_nodes, int current_node) {
-    // If all nodes have been visited, return to the starting node
+    //SHA: If all nodes have been visited, return to the starting node
     if (visited_nodes == (1 << n) - 1) {
-        return matrix[current_node][0]; // Return to the starting node
+        return matrix[current_node][0]; //SHA: Return to the starting node
     }
-    // If this state has already been computed
+    //SHA: If this state has already been computed
     if (memoization[visited_nodes][current_node] != INF) {
         return memoization[visited_nodes][current_node];
     }
-    // Explore all possible next nodes
+    //SHA: Explore all possible next nodes
     for (int next_nodes = 0; next_nodes < n; next_nodes++) {
-        // If the city has not been visited yet
+        //SHA: If the city has not been visited yet
         if ((visited_nodes & (1 << next_nodes)) == 0) {
             int newCost = matrix[current_node][next_nodes] +
             held_karp(visited_nodes | (1 << next_nodes), next_nodes);
@@ -38,22 +38,22 @@ int held_karp(int visited_nodes, int current_node) {
     return memoization[visited_nodes][current_node];
 }
 
-int main() {
-    // Input: Number of nodes
+int main_sha() {
+    //SHA: Input: Number of nodes
     printf("Enter number of nodes: ");
     scanf("%d", &n);
-    // Input: Adjacency matrix
+    //SHA: Input: Adjacency matrix
     printf("Enter the adjacency matrix:\n");
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             scanf("%d", &matrix[i][j]);
         }
     }
-    // Initialize the memoization table
+    //SHA: Initialize the memoization table
     initialize_memoization();
     // Calculate the minimum cost of the TSP
-    int minCost = held_karp(1, 0); // Starting from node 0 with mask 1 (only node 0 visited)
-    // Output the result
+    int minCost = held_karp(1, 0); //SHA: Starting from node 0 with mask 1 (only node 0 visited)
+    //SHA: Output the result
     printf("The minimum cost Hamiltonian cycle is: %d\n", minCost);
     return 0;
 }

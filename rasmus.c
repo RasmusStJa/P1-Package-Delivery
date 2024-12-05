@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -10,14 +11,14 @@
 #define LINELENGTH 64
 #define STDLINECOUNT 10
 
-typedef struct node_g {  //g for graph
+typedef struct node_g {  //RAS: g for graph
     char name;
     int index;
     bool visited;
-    //struct node_g* neighbors[MAXNODES]; //useless for adjacency matrix
+    //RAS: struct node_g* neighbors[MAXNODES]; //useless for adjacency matrix
 } node_g;
 
-/*
+
 typedef struct edge_g {  //g for graph
     char name;
     int weight[];
@@ -27,27 +28,17 @@ typedef struct hash_item {
     node_g* node;
 
 } hash_item;
-*/
+
 
 typedef struct adjacency_matrix {
-    /*
-    node_g *nodes = malloc(MAXNODES * sizeof(node_g));          //array with length MAXNODES
-    int *values = malloc(MAXNODES * MAXNODES * sizeof(int));    //matrix with size MAXNODES
-    */
-    node_g nodes[MAXNODES];             //array with length MAXNODES
-    int values[MAXNODES][MAXNODES];     //matrix with size MAXNODES
+
+    //node_g *nodes = malloc(MAXNODES * sizeof(node_g));          //RAS: array with length MAXNODES
+    //int *values = malloc(MAXNODES * MAXNODES * sizeof(int));    //RAS: matrix with size MAXNODES
+
+    node_g nodes[MAXNODES];             //RAS: array with length MAXNODES
+    int values[MAXNODES][MAXNODES];     //RAS: matrix with size MAXNODES
     unsigned int size;
 } adjacency_matrix;
-
-typedef struct tree_node {  //t for tree
-    char name;
-    struct tree_node* before;
-    struct tree_node* after;
-} tree_node;
-
-typedef struct {
-    tree_node* root;
-} tree_t;
 
 int min(const int a, const int b) {
     if (a < b) return a;
@@ -67,11 +58,11 @@ void* fillMatrix(const void* value, const int length1, const int length2) {
 void printAdjacencyMatrix(const adjacency_matrix *adjacency_matrix) {
     unsigned int length = sizeof(adjacency_matrix->nodes) / sizeof(adjacency_matrix->nodes[0]);
 
-    //print every node in the same line
-    printf("  "); //formatting
+    //RAS: print every node in the same line
+    printf("  "); //RAS: formatting
     for (unsigned int i = 0; i < length; i++) {
         const char node_name = adjacency_matrix->nodes[i].name;
-        //while it's a letter in the alphabet (while each has been initialized
+        //RAS: while it's a letter in the alphabet (while each has been initialized
         if (!isalpha(node_name)) {
             length = i;
             break;
@@ -80,11 +71,11 @@ void printAdjacencyMatrix(const adjacency_matrix *adjacency_matrix) {
     }
     printf("\n");
 
-    for (unsigned int y = 0; y < length; y++) { //column
+    for (unsigned int y = 0; y < length; y++) { //RAS: column
         const char node_name = adjacency_matrix->nodes[y].name;
 
-        for (unsigned int x = 0; x < length; x++) { //row (+1 to account for added name)
-            //print every node on each line
+        for (unsigned int x = 0; x < length; x++) { //RAS: row
+            //RAS: print every node on each line
             if (x == 0) { printf("%c ", node_name); }
             printf("%d ", adjacency_matrix->values[y][x]);
         }
@@ -106,9 +97,9 @@ adjacency_matrix getFileContent(const char* fileName, char* fileContent[], char*
     }
 
     unsigned int i = 0;
-    while (fgets(line, LINELENGTH, fptr)) {  //while line is not empty (null)
+    while (fgets(line, LINELENGTH, fptr)) {  //RAS: while line is not empty (null)
         if (i == 0) {
-            //if first time, get nodes (and amount)
+            //RAS: if first time, get nodes (and amount)
             const unsigned int line_size = strlen(line);
             for (unsigned int j = 0; j < line_size; j++) {
                 const char current_char = line[j];
@@ -116,8 +107,8 @@ adjacency_matrix getFileContent(const char* fileName, char* fileContent[], char*
                 bool end_loop = false;
                 switch (current_char) {
                     case ' ':
-                        //this means that a new node's name starts, meaning more nodes, so increment matrix size
-                        if (j != line_size - 1) { //if not last
+                        //RAS: this means that a new node's name starts, meaning more nodes, so increment matrix size
+                        if (j != line_size - 1) { //RAS: if not last
                             matrix1.size++;
                             last_space_index = j;
                         }
@@ -134,7 +125,7 @@ adjacency_matrix getFileContent(const char* fileName, char* fileContent[], char*
             i++;
             continue;
         }
-        //else get values
+        //RAS: else get values
         fileContent[i] = line;
         i++;
     }
@@ -151,9 +142,9 @@ void saveContentInFile(const char* fileName, const adjacency_matrix* matrix1) {
 
     for (unsigned int x = 0; x < length; x++) {
         for (unsigned int y = 0; y < length + 1; y++) {
-            fprintf(fptr, "%d ", *value_matrix[x][y]);  //save for each value
+            fprintf(fptr, "%d ", *value_matrix[x][y]);  //RAS: save for each value
         }
-        fprintf(fptr, "\n");  //next line
+        fprintf(fptr, "\n");  //RAS: next line
     }
 
     fclose(fptr);
@@ -166,8 +157,8 @@ unsigned int getCost(const adjacency_matrix matrix, const node_g node1, const no
 void setup(const adjacency_matrix m, int *memory[20][20], const node_g S) {
     const unsigned int N = m.size;
     for (unsigned int i = 0; i < N; i++) {
-        if (i == S.index) { continue; }  //skip the starting node
-        //cache optimal value from S.index to i
+        if (i == S.index) { continue; }  //RAS: skip the starting node
+        //RAS: cache optimal value from S.index to i
         memory[i][1 << S.index | 1 << i] = m.values[S.index][i];
     }
 }
@@ -183,8 +174,8 @@ void held_karp(const adjacency_matrix m, const node_g S, int *minCost, node_g* r
     //TODO: implement code from video: https://youtu.be/cY4HiiFHO1o&t=576
     const unsigned int N = m.size;
 
-    //initialize "memory" as +inf (INT_MAX is the closest to inf)
-    //memory is list of indexes of visited nodes
+    //RAS: initialize "memory" as +inf (INT_MAX is the closest to inf)
+    //RAS: memory is list of indexes of visited nodes
     int old_memory[(int)pow(2, N)] = {};
     int memory[N][(int)pow(2,N)] = { old_memory };
 
@@ -198,10 +189,8 @@ int main(void) {
     adjacency_matrix matrix1;
     matrix1.size = MAXNODES;
 
-    node_g node1;
-    node1.name = 'A';
-    node_g node2;
-    node2.name = 'B';
+    node_g node1; node1.name = 'A';
+    node_g node2; node2.name = 'B';
 
     matrix1.nodes[0].name = 'A'; matrix1.nodes[0].index = 1;
     matrix1.nodes[1].name = 'B'; matrix1.nodes[1].index = 2;
@@ -213,7 +202,7 @@ int main(void) {
     matrix1.values[1][0] = 1; matrix1.values[1][1] = 0; matrix1.values[1][2] = 1;
     matrix1.values[2][0] = 2; matrix1.values[2][1] = 1; matrix1.values[2][2] = 0;
 
-    char* inputContent[STDLINECOUNT][LINELENGTH]; //array length * max string length * character size
+    char* inputContent[STDLINECOUNT][LINELENGTH]; //RAS: array length * max string length * character size
     //getFileContent("input.txt", inputContent);
 
     printAdjacencyMatrix(&matrix1);

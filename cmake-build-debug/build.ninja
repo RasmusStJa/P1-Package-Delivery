@@ -55,36 +55,6 @@ build CMakeFiles/P1_Package_Delivery.dir/main.c.obj: C_COMPILER__P1_Package_Deli
   OBJECT_DIR = CMakeFiles\P1_Package_Delivery.dir
   OBJECT_FILE_DIR = CMakeFiles\P1_Package_Delivery.dir
 
-build CMakeFiles/P1_Package_Delivery.dir/abdirisak.c.obj: C_COMPILER__P1_Package_Delivery_unscanned_Debug C$:/Users/rasmu/CLionProjects/P1-Package-Delivery/abdirisak.c || cmake_object_order_depends_target_P1_Package_Delivery
-  DEP_FILE = CMakeFiles\P1_Package_Delivery.dir\abdirisak.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\P1_Package_Delivery.dir
-  OBJECT_FILE_DIR = CMakeFiles\P1_Package_Delivery.dir
-
-build CMakeFiles/P1_Package_Delivery.dir/jin.c.obj: C_COMPILER__P1_Package_Delivery_unscanned_Debug C$:/Users/rasmu/CLionProjects/P1-Package-Delivery/jin.c || cmake_object_order_depends_target_P1_Package_Delivery
-  DEP_FILE = CMakeFiles\P1_Package_Delivery.dir\jin.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\P1_Package_Delivery.dir
-  OBJECT_FILE_DIR = CMakeFiles\P1_Package_Delivery.dir
-
-build CMakeFiles/P1_Package_Delivery.dir/shahed.c.obj: C_COMPILER__P1_Package_Delivery_unscanned_Debug C$:/Users/rasmu/CLionProjects/P1-Package-Delivery/shahed.c || cmake_object_order_depends_target_P1_Package_Delivery
-  DEP_FILE = CMakeFiles\P1_Package_Delivery.dir\shahed.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\P1_Package_Delivery.dir
-  OBJECT_FILE_DIR = CMakeFiles\P1_Package_Delivery.dir
-
-build CMakeFiles/P1_Package_Delivery.dir/eman.c.obj: C_COMPILER__P1_Package_Delivery_unscanned_Debug C$:/Users/rasmu/CLionProjects/P1-Package-Delivery/eman.c || cmake_object_order_depends_target_P1_Package_Delivery
-  DEP_FILE = CMakeFiles\P1_Package_Delivery.dir\eman.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\P1_Package_Delivery.dir
-  OBJECT_FILE_DIR = CMakeFiles\P1_Package_Delivery.dir
-
-build CMakeFiles/P1_Package_Delivery.dir/rasmus.c.obj: C_COMPILER__P1_Package_Delivery_unscanned_Debug C$:/Users/rasmu/CLionProjects/P1-Package-Delivery/rasmus.c || cmake_object_order_depends_target_P1_Package_Delivery
-  DEP_FILE = CMakeFiles\P1_Package_Delivery.dir\rasmus.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\P1_Package_Delivery.dir
-  OBJECT_FILE_DIR = CMakeFiles\P1_Package_Delivery.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target P1_Package_Delivery
@@ -93,7 +63,7 @@ build CMakeFiles/P1_Package_Delivery.dir/rasmus.c.obj: C_COMPILER__P1_Package_De
 #############################################
 # Link the executable P1_Package_Delivery.exe
 
-build P1_Package_Delivery.exe: C_EXECUTABLE_LINKER__P1_Package_Delivery_Debug CMakeFiles/P1_Package_Delivery.dir/main.c.obj CMakeFiles/P1_Package_Delivery.dir/abdirisak.c.obj CMakeFiles/P1_Package_Delivery.dir/jin.c.obj CMakeFiles/P1_Package_Delivery.dir/shahed.c.obj CMakeFiles/P1_Package_Delivery.dir/eman.c.obj CMakeFiles/P1_Package_Delivery.dir/rasmus.c.obj
+build P1_Package_Delivery.exe: C_EXECUTABLE_LINKER__P1_Package_Delivery_Debug CMakeFiles/P1_Package_Delivery.dir/main.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\P1_Package_Delivery.dir
