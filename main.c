@@ -12,7 +12,8 @@
  *Det bruges til at repræsentere "uendelig", når en sti ikke er
  *mulig. */
 
-//RAS: example of a size 20 matrix (completely random numbers though)
+//RAS: example of a size 20 matrix (completely random distances, except from a node to itself)
+
 int dist[20][20] = {
     {0, 2, 5, 12,10,15,12,5, 7, 8, 8, 6, 9, 5, 14,11,14,4, 3, 3},
     {2, 0, 4, 9, 15,13,12,15,5, 5, 6, 9, 11,4, 5, 2, 14,6, 1, 13},
@@ -36,34 +37,56 @@ int dist[20][20] = {
     {3, 3, 9, 3, 15,4, 9, 12,9, 13,6, 2, 13,6, 9, 13,12,11,9 ,0}
 };
 
-
 int dp[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //ABD: array, der gemmer de mindste omkostninger.
+int parents[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //RAS: matrix of chosen path
 int n = MAX_LOCATIONS; //ABD: Beregner , som bruges til at repræsentere alle mulige undergrupper af lokationer.
 
 int tsp_abd(int mask, int pos) {
-
+    //RAS: if done
     if (mask == (1 << n) - 1) {
         return dist[pos][0];
     }
 
+    //RAS: if cost is not defined
     if (dp[mask][pos] != -1) {
         return dp[mask][pos];
     }
 
-    int ans = INF;
+    int ans = INF, bestCity = -1;
 
     for (int city = 0; city < n; city++) {
         if (!(mask & (1 << city))) {
-            int newAns = dist[pos][city] + tsp_abd(mask | (1 << city),city);
+            const int newAns = dist[pos][city] + tsp_abd(mask | (1 << city),city);
+            //RAS: if cost is lower, update ans and best city
             if (newAns < ans) {
                 ans = newAns;
+                bestCity = city;
             }
         }
     }
 
     dp[mask][pos] = ans;
+    parents[mask][pos] = bestCity;
     return ans;
 }
+
+void printPath(int mask, int pos) {
+    const int start = pos;
+    const char* between = " -> ";
+
+    printf("%d%s", start, between);
+    while (mask != (1 << n) - 1) {  //RAS: while all cities haven't been visited
+        const int nextCity = parents[mask][pos];    //RAS: get next city
+
+        printf("%d%s", nextCity, between);
+
+        mask |= (1 << nextCity);    //RAS: mark as visited
+        pos = nextCity;             //RAS: update position
+    }
+    //RAS: go back to the start
+    printf("%d\n", start);
+}
+
 
 int main() {
     for (int i = 0; i < (1 << n); i++) {
@@ -71,8 +94,12 @@ int main() {
             dp[i][j] = -1;
         }
     }
+
     // Step 2.
-    int result = tsp_abd(1, 0);
+    const int mask = 1, pos = 0;
+    const int result = tsp_abd(mask, pos);
     printf("The shortest path has cost: %d\n", result);
+    printf("Here's the optimal route:\n");
+    printPath(mask, pos);
     return 0;
 }
