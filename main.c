@@ -95,7 +95,7 @@ int main() {
         }
     }
 
-    // Step 2.
+    //ABD: Step 2.
     const int mask = 1, pos = 0;
     const int result = tsp_abd(mask, pos);
     printf("The shortest path has cost: %d\n", result);
