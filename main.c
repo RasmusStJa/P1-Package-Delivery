@@ -70,7 +70,7 @@ int tsp_abd(int mask, int pos) {
     return ans;
 }
 
-void printPath(int mask, int pos) {
+void printRoute(int mask, int pos) {
     const int start = pos;
     const char* between = " -> ";
 
@@ -100,6 +100,6 @@ int main() {
     const int result = tsp_abd(mask, pos);
     printf("The shortest path has cost: %d\n", result);
     printf("Here's the optimal route:\n");
-    printPath(mask, pos);
+    printRoute(mask, pos);
     return 0;
 }
