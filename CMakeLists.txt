@@ -4,4 +4,8 @@ project(P1_Package_Delivery C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(P1_Package_Delivery
-    main.c)
+    main.c
+        held-karp.c
+        held-karp.h
+        a-star.c
+        a-star.h)
