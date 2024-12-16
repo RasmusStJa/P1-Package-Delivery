@@ -41,7 +41,7 @@ int main() {
     printf("Held-karp:\n");
     const int mask = 1, pos = 0;
     const int result = held_karp(mask, pos, 0);
-    printf("The shortest path has cost: %d\n", result);
+    printf("The shortest route has cost: %d\n", result);
     printf("Here's the optimal route:\n");
     print_held_karp_route(mask, pos);
 
