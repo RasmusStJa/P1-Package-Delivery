@@ -38,7 +38,7 @@ int dist[MAX_LOCATIONS][MAX_LOCATIONS] = {
     {3, 3, 9, 3, 15, 4, 9, 12, 9, 13, 6, 2, 13, 6, 9, 13, 12, 11, 9, 0}
 };
 
-int dp[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //ABD: array, der gemmer de mindste omkostninger.
+int dp[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //ABD: matrix, der gemmer de mindste omkostninger.
 int parents[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //RAS: matrix of chosen path
 int n = MAX_LOCATIONS; //ABD: Beregner , som bruges til at repræsentere alle mulige undergrupper af lokationer.
 
@@ -46,6 +46,7 @@ int n = MAX_LOCATIONS; //ABD: Beregner , som bruges til at repræsentere alle mu
 int held_karp(const int mask, const int pos, unsigned int iteration) {
     //RAS: only run the first time
     if (iteration == 0) {
+        //RAS: correctly initializes the matrix
         for (unsigned int i = 0; i < (1 << n); i++) {
             for (unsigned int j = 0; j < n; j++) {
                 dp[i][j] = -1;
@@ -65,13 +66,13 @@ int held_karp(const int mask, const int pos, unsigned int iteration) {
 
     int ans = INF, bestCity = -1;
 
-    for (unsigned int city = 0; city < n; city++) {
-        if (!(mask & (1 << city))) {
-            const int newAns = dist[pos][city] + held_karp(mask | (1 << city), city, ++iteration);
+    for (unsigned int destination = 0; destination < n; destination++) {
+        if (!(mask & (1 << destination))) {
+            const int newAns = dist[pos][destination] + held_karp(mask | (1 << destination), destination, ++iteration);
             //RAS: if cost is lower, update ans and best city
             if (newAns < ans) {
                 ans = newAns;
-                bestCity = city;
+                bestCity = destination;
             }
         }
     }
@@ -86,14 +87,16 @@ void print_held_karp_route(int mask, int pos) {
     const char *between = " -> ";
 
     printf("%d%s", start, between);
+
+    //RAS: print for every node
     while (mask != (1 << n) - 1) {
-        //RAS: while all cities haven't been visited
-        const int nextCity = parents[mask][pos]; //RAS: get next city
+        //RAS: while all destinations haven't been visited
+        const int nextDest = parents[mask][pos]; //RAS: get next city
 
-        printf("%d%s", nextCity, between);
+        printf("%d%s", nextDest, between);
 
-        mask |= (1 << nextCity); //RAS: mark as visited
-        pos = nextCity; //RAS: update position
+        mask |= 1 << nextDest; //RAS: mark as visited
+        pos = nextDest; //RAS: update position
     }
     //RAS: go back to the start
     printf("%d\n", start);

@@ -4,6 +4,10 @@
 
 #ifndef A_STAR_H
 #define A_STAR_H
+#define NUM_MAIN_NODES 15
+#define NUM_INTERMEDIATE_NODES 5
+#define GRID_WIDTH 30
+#define GRID_HEIGHT 30
 
 typedef struct {
     int id;
@@ -19,5 +23,10 @@ double a_star(Node nodes[], int num_nodes, Edge edges[], int num_edges, int star
 
 void print_a_star_results(const double** main_node_distances);
 
+void print_nodes(unsigned int num_nodes, const Node nodes[]);
+
+double euclidean_heuristic(Node a, Node b);
+
+double** shortest_distance_main_nodes(Node nodes[], Edge edges[]);
 
 #endif //A_STAR_H

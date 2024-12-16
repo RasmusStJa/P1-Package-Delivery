@@ -47,7 +47,9 @@ double a_star(Node nodes[], const int num_nodes, Edge edges[], const int num_edg
     f_score[start] = euclidean_heuristic(nodes[start], nodes[goal]);
     open_set[start] = 1;
 
-    while (1) {
+    int while_counter = 0;
+    while (while_counter < INF - 1000) { //RAS: basically while (1)
+        while_counter++;
         //SHA: Find node in OPEN with lowest f(node)
         int current = -1;
         double min_f_score = INF;
@@ -60,6 +62,7 @@ double a_star(Node nodes[], const int num_nodes, Edge edges[], const int num_edg
 
         //SHA: If OPEN is empty, return error (no solution)
         if (current == -1) {
+            printf("A* Error: Open is empty.\n");
             free(g_score);
             free(f_score);
             free(open_set);
@@ -120,6 +123,54 @@ void print_a_star_results(const double** main_node_distances) {
     }
 }
 
+void print_nodes(const unsigned int num_nodes, const Node nodes[]) {
+    printf("Nodes (ID, X, Y):\n");
+    for (unsigned int i = 0; i < num_nodes; i++) {
+        printf("Node ID: %d, X: %.2f, Y: %.2f\n", nodes[i].id, nodes[i].x, nodes[i].y);
+    }
+
+    //SHA: Separate and print main nodes and intermediate nodes
+    printf("\nMain Nodes:\n");
+    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
+        const unsigned int main_node_id = i * NUM_INTERMEDIATE_NODES; //SHA: First intermediate node for each main node
+        printf("Main Node %d -> Node ID: %d, X: %.2f, Y: %.2f\n",
+            i,
+            nodes[main_node_id].id, nodes[main_node_id].x, nodes[main_node_id].y);
+    }
+
+    printf("\nIntermediate Nodes:\n");
+    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
+        for (unsigned int j = 0; j < NUM_INTERMEDIATE_NODES; j++) {
+            const unsigned int intermediate_node_id = i * NUM_INTERMEDIATE_NODES + j;
+            printf("Intermediate Node (%d-%d) -> Node ID: %d, X: %.2f, Y: %.2f\n",
+                i, j,
+                nodes[intermediate_node_id].id, nodes[intermediate_node_id].x, nodes[intermediate_node_id].y);
+        }
+    }
+}
+
+double** shortest_distance_main_nodes(Node nodes[], Edge edges[]) {
+    const unsigned int nodes_size = sizeof(nodes) / sizeof(nodes[0]);
+    const unsigned int edges_size = sizeof(edges) / sizeof(edges[0]);
+
+    double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES];
+
+    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
+        for (unsigned int j = i + 1; j < NUM_MAIN_NODES; j++) {
+            const int start = i * NUM_INTERMEDIATE_NODES;
+            const int goal = j * NUM_INTERMEDIATE_NODES + NUM_INTERMEDIATE_NODES - 1;
+
+            main_node_distances[i][j] = a_star(nodes, edges_size, edges, nodes_size, start, goal);
+
+            if (main_node_distances[i][j] == INF) {
+                printf("A*: Shortest distance: An error occured.");
+                return main_node_distances;
+            }
+            main_node_distances[j][i] = main_node_distances[i][j]; //SHA: Symmetry
+        }
+    }
+    return main_node_distances;
+}
 /*
 //SHA: Main function
 int main() {
@@ -127,7 +178,7 @@ int main() {
     //TODO: Convert most (if not all) the following lines of code to functions
 
     //SHA: Define the intermediate graph
-    const int num_nodes = NUM_INTERMEDIATE_NODES * NUM_MAIN_NODES;
+    const unsigned int num_nodes = NUM_INTERMEDIATE_NODES * NUM_MAIN_NODES;
     Node nodes[num_nodes];
     Edge edges[num_nodes * num_nodes];
 
@@ -139,52 +190,20 @@ int main() {
     }
 
     //SHA: Print all nodes
-    printf("Nodes (ID, X, Y):\n");
-    for (unsigned int i = 0; i < num_nodes; i++) {
-        printf("Node ID: %d, X: %.2f, Y: %.2f\n", nodes[i].id, nodes[i].x, nodes[i].y);
-    }
-
-    //SHA: Separate and print main nodes and intermediate nodes
-    printf("\nMain Nodes:\n");
-    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
-        const int main_node_id = i * NUM_INTERMEDIATE_NODES; //SHA: First intermediate node for each main node
-        printf("Main Node %d -> Node ID: %d, X: %.2f, Y: %.2f\n", i, nodes[main_node_id].id, nodes[main_node_id].x,
-               nodes[main_node_id].y);
-    }
-
-    printf("\nIntermediate Nodes:\n");
-    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
-        for (unsigned int j = 0; j < NUM_INTERMEDIATE_NODES; j++) {
-            const int intermediate_node_id = i * NUM_INTERMEDIATE_NODES + j;
-            printf("Intermediate Node (%d-%d) -> Node ID: %d, X: %.2f, Y: %.2f\n", i, j, nodes[intermediate_node_id].id,
-                   nodes[intermediate_node_id].x, nodes[intermediate_node_id].y);
-        }
-    }
+    print_nodes(num_nodes, nodes);
 
     //SHA: Populate edges with costs
     int edge_count = 0;
     for (unsigned int i = 0; i < num_nodes; i++) {
-        for (unsigned int j = i + 1; j < num_nodes; j++) {
+        for (unsigned int j = i + 1; j < num_nodes; j++, edge_count++) {
             edges[edge_count].start = i;
             edges[edge_count].end = j;
             edges[edge_count].cost = euclidean_heuristic(nodes[i], nodes[j]);
-            edge_count++;
         }
     }
 
-    //SHA: Calculate the shortest path between main nodes
-    double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES];
-    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
-        for (unsigned int j = i + 1; j < NUM_MAIN_NODES; j++) {
-            const int start = i * NUM_INTERMEDIATE_NODES;
-            const int goal = j * NUM_INTERMEDIATE_NODES + NUM_INTERMEDIATE_NODES - 1;
-            main_node_distances[i][j] = a_star(nodes, num_nodes, edges, edge_count, start, goal);
-            main_node_distances[j][i] = main_node_distances[i][j]; //SHA: Symmetric
-        }
-    }
-
-    //SHA: Print results
-    print_a_star_results(main_node_distances);
+    //SHA: Print results & calculate the shortest path between main nodes
+    print_a_star_results(shortest_distance_main_nodes(nodes, edges));
 
     return 0;
 }*/
