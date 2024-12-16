@@ -64,7 +64,7 @@ int held_karp(const int mask, const int pos, unsigned int iteration) {
         return dp[mask][pos];
     }
 
-    int ans = INF, bestCity = -1;
+    int ans = INF, bestDestination = -1;
 
     for (unsigned int destination = 0; destination < n; destination++) {
         if (!(mask & (1 << destination))) {
@@ -72,13 +72,13 @@ int held_karp(const int mask, const int pos, unsigned int iteration) {
             //RAS: if cost is lower, update ans and best city
             if (newAns < ans) {
                 ans = newAns;
-                bestCity = destination;
+                bestDestination = destination;
             }
         }
     }
 
     dp[mask][pos] = ans;
-    parents[mask][pos] = bestCity;
+    parents[mask][pos] = bestDestination;
     return ans;
 }
 

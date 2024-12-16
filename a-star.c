@@ -150,8 +150,8 @@ void print_nodes(const unsigned int num_nodes, const Node nodes[]) {
 }
 
 double** shortest_distance_main_nodes(Node nodes[], Edge edges[]) {
-    const unsigned int nodes_size = sizeof(nodes) / sizeof(nodes[0]);
-    const unsigned int edges_size = sizeof(edges) / sizeof(edges[0]);
+    const unsigned int node_count = NUM_INTERMEDIATE_NODES * NUM_MAIN_NODES;
+    const unsigned int edge_count = node_count * (node_count + 1) / 2; //RAS: for loop in "Populate edges with costs" in main.c
 
     double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES];
 
@@ -160,10 +160,10 @@ double** shortest_distance_main_nodes(Node nodes[], Edge edges[]) {
             const int start = i * NUM_INTERMEDIATE_NODES;
             const int goal = j * NUM_INTERMEDIATE_NODES + NUM_INTERMEDIATE_NODES - 1;
 
-            main_node_distances[i][j] = a_star(nodes, edges_size, edges, nodes_size, start, goal);
+            main_node_distances[i][j] = a_star(nodes, edge_count, edges, node_count, start, goal);
 
             if (main_node_distances[i][j] == INF) {
-                printf("A*: Shortest distance: An error occured.");
+                printf("A*: Shortest distance: An error occured.\n");
                 return main_node_distances;
             }
             main_node_distances[j][i] = main_node_distances[i][j]; //SHA: Symmetry
