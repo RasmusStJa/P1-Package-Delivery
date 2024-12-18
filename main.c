@@ -16,28 +16,35 @@ int main() {
     Edge edges[num_nodes * num_nodes];
 
     //SHA: Populate nodes with random coordinates
-    for (unsigned int i = 0; i < num_nodes; i++) {
-        nodes[i].id = i;
-        nodes[i].x = rand() % GRID_WIDTH;
-        nodes[i].y = rand() % GRID_HEIGHT;
-    }
+    populate_nodes(nodes, num_nodes);
 
-    //SHA: Print all nodes
     print_nodes(num_nodes, nodes);
 
     //SHA: Populate edges with costs
-    int edge_count = 0;
-    for (unsigned int i = 0; i < num_nodes; i++) {
-        for (unsigned int j = i + 1; j < num_nodes; j++, edge_count++) {
-            edges[edge_count].start = i;
-            edges[edge_count].end = j;
-            edges[edge_count].cost = euclidean_heuristic(nodes[i], nodes[j]);
+    populate_edges(edges, nodes, num_nodes);
+
+    //SHA: Calculate the shortest path between main nodes
+    const unsigned int edge_count = num_nodes * (num_nodes + 1) / 2; //RAS: look at line 157-158 in a-star.c
+    double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES];
+    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
+        for (unsigned int j = i + 1; j < NUM_MAIN_NODES; j++) {
+            const int start = i * NUM_INTERMEDIATE_NODES;
+            const int goal = j * NUM_INTERMEDIATE_NODES + NUM_INTERMEDIATE_NODES - 1;
+            main_node_distances[i][j] = a_star(nodes, num_nodes, edges, edge_count, start, goal);
+            main_node_distances[j][i] = main_node_distances[i][j]; //SHA: Symmetric
+        }
+    }
+
+    //SHA: Print results
+    printf("\nShortest Paths Between Main Nodes:\n");
+    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
+        for (unsigned int j = 0; j < NUM_MAIN_NODES; j++) {
+            printf("Distance from Main Node %d to Main Node %d: %.2f\n", i, j, main_node_distances[i][j]);
         }
     }
 
     //SHA: Print results & calculate the shortest path between main nodes
-    const double** a_star_result = shortest_distance_main_nodes(nodes, edges);
-    print_a_star_results(a_star_result);
+    //print_a_star_results(shortest_distance_main_nodes(nodes, edges));
 
     printf("Held-karp:\n");
     const int pos = 0;

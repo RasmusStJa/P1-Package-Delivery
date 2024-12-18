@@ -6,6 +6,7 @@
 #define A_STAR_H
 #define NUM_MAIN_NODES 15
 #define NUM_INTERMEDIATE_NODES 5
+//#define INF INT_MAX
 #define GRID_WIDTH 30
 #define GRID_HEIGHT 30
 
@@ -27,6 +28,10 @@ void print_nodes(unsigned int num_nodes, const Node nodes[]);
 
 double euclidean_heuristic(Node a, Node b);
 
-double** shortest_distance_main_nodes(Node nodes[], Edge edges[]);
+void populate_nodes(Node nodes[], unsigned int num_nodes);
+
+void populate_edges(Edge edges[], Node nodes[], unsigned int num_nodes);
+
+//double** shortest_distance_main_nodes(Node nodes[], Edge edges[]);
 
 #endif //A_STAR_H
