@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
+#include "a-star.h"
 
 #define MAX_LOCATIONS 20 //ABD: Jeg har taget udgangspunkt i eksemplet, som består af 4 lokationer, dette skal ændres når matri
 
@@ -35,15 +36,13 @@ int dist[MAX_LOCATIONS][MAX_LOCATIONS] = {
     {3, 3, 9, 3, 15, 4, 9, 12, 9, 13, 6, 2, 13, 6, 9, 13, 12, 11, 9, 0}
 };
 
-int dp[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //ABD: matrix, der gemmer de mindste omkostninger.
-int parents[1 << MAX_LOCATIONS][MAX_LOCATIONS]; //RAS: matrix of chosen path
-int n = MAX_LOCATIONS; //ABD: Beregner , som bruges til at repræsentere alle mulige undergrupper af lokationer.
+int dp[1 << NUM_MAIN_NODES][NUM_MAIN_NODES]; //ABD: matrix, der gemmer de mindste omkostninger.
+int parents[1 << NUM_MAIN_NODES][NUM_MAIN_NODES]; //RAS: matrix of chosen path
+int n = NUM_MAIN_NODES; //ABD: Beregner , som bruges til at repræsentere alle mulige undergrupper af lokationer.
 
 //ABD
-int held_karp(const int mask, const int pos, unsigned int iteration) {
-    //RAS: only run the first time
+int held_karp(double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES], int mask, const int pos, unsigned int iteration) {
     if (iteration == 0) {
-        //RAS: correctly initializes the matrix
         for (unsigned int i = 0; i < (1 << n); i++) {
             for (unsigned int j = 0; j < n; j++) {
                 dp[i][j] = -1;
@@ -51,12 +50,10 @@ int held_karp(const int mask, const int pos, unsigned int iteration) {
         }
     }
 
-    //RAS: if done
     if (mask == (1 << n) - 1) {
-        return dist[pos][0];
+        return main_node_distances[pos][0];
     }
 
-    //RAS: if cost is not defined
     if (dp[mask][pos] != -1) {
         return dp[mask][pos];
     }
@@ -65,8 +62,7 @@ int held_karp(const int mask, const int pos, unsigned int iteration) {
 
     for (unsigned int destination = 0; destination < n; destination++) {
         if (!(mask & (1 << destination))) {
-            const int newAns = dist[pos][destination] + held_karp(mask | (1 << destination), destination, ++iteration);
-            //RAS: if cost is lower, update ans and best city
+            const int newAns = main_node_distances[pos][destination] + held_karp(main_node_distances, mask | (1 << destination), destination, ++iteration);
             if (newAns < ans) {
                 ans = newAns;
                 bestDestination = destination;
@@ -76,10 +72,12 @@ int held_karp(const int mask, const int pos, unsigned int iteration) {
 
     dp[mask][pos] = ans;
     parents[mask][pos] = bestDestination;
+
     return ans;
 }
 
-void print_held_karp_route(int mask, int pos, const char between[]) {
+void print_held_karp_route(int pos, const char between[]) {
+    int mask = 1;
     const int start = pos;
 
     printf("%d%s", start, between);

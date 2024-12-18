@@ -42,10 +42,10 @@ int main() {
 
     printf("Held-karp:\n");
     const int pos = 0;
-    const int h_k_result = held_karp(1, pos, 0);
+    const int h_k_result = held_karp(main_node_distances, 1 << pos, pos, 0);
     printf("The shortest route has cost: %d\n", h_k_result);
     printf("Here's the optimal route:\n");
-    print_held_karp_route(1, pos, " -> ");
+    print_held_karp_route(pos, " -> ");
 
     return 0;
 }
