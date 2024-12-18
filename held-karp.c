@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <limits.h>
-#include <string.h>
-#include <stdbool.h>
 #include <stdlib.h>
 
 #define MAX_LOCATIONS 20 //ABD: Jeg har taget udgangspunkt i eksemplet, som består af 4 lokationer, dette skal ændres når matri
@@ -81,9 +79,8 @@ int held_karp(const int mask, const int pos, unsigned int iteration) {
     return ans;
 }
 
-void print_held_karp_route(int mask, int pos) {
+void print_held_karp_route(int mask, int pos, const char between[]) {
     const int start = pos;
-    const char *between = " -> ";
 
     printf("%d%s", start, between);
 
@@ -100,13 +97,3 @@ void print_held_karp_route(int mask, int pos) {
     //RAS: go back to the start
     printf("%d\n", start);
 }
-/*
-int main() {
-    //ABD: Step 2.
-    const int mask = 1, pos = 0;
-    const int result = held_karp(mask, pos);
-    printf("The shortest path has cost: %d\n", result);
-    printf("Here's the optimal route:\n");
-    printRoute(mask, pos);
-    return 0;
-}*/

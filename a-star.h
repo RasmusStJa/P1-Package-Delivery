@@ -22,7 +22,7 @@ typedef struct {
 
 double a_star(Node nodes[], int num_nodes, Edge edges[], int num_edges, int start, int goal);
 
-void print_a_star_results(const double** main_node_distances);
+void print_a_star_results(const double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES]);
 
 void print_nodes(unsigned int num_nodes, const Node nodes[]);
 
@@ -32,6 +32,6 @@ void populate_nodes(Node nodes[], unsigned int num_nodes);
 
 void populate_edges(Edge edges[], Node nodes[], unsigned int num_nodes);
 
-//double** shortest_distance_main_nodes(Node nodes[], Edge edges[]);
+void shortest_distance_main_nodes(Node nodes[], Edge edges[], double *main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES]);
 
 #endif //A_STAR_H

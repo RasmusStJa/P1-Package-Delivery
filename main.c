@@ -8,7 +8,6 @@ int main() {
     printf("A-star:\n");
 
     srand(time(NULL)); //SHA: Seed the random number generator with the current time
-    //TODO: Convert most (if not all) the following lines of code to functions
 
     //SHA: Define the intermediate graph
     const unsigned int num_nodes = NUM_INTERMEDIATE_NODES * NUM_MAIN_NODES;
@@ -36,12 +35,7 @@ int main() {
     }
 
     //SHA: Print results
-    printf("\nShortest Paths Between Main Nodes:\n");
-    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
-        for (unsigned int j = 0; j < NUM_MAIN_NODES; j++) {
-            printf("Distance from Main Node %d to Main Node %d: %.2f\n", i, j, main_node_distances[i][j]);
-        }
-    }
+    print_a_star_results(main_node_distances);
 
     //SHA: Print results & calculate the shortest path between main nodes
     //print_a_star_results(shortest_distance_main_nodes(nodes, edges));
@@ -51,7 +45,7 @@ int main() {
     const int h_k_result = held_karp(1, pos, 0);
     printf("The shortest route has cost: %d\n", h_k_result);
     printf("Here's the optimal route:\n");
-    print_held_karp_route(1, pos);
+    print_held_karp_route(1, pos, " -> ");
 
     return 0;
 }

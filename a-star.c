@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <limits.h>
-#include <time.h>
-
 
 #define NUM_MAIN_NODES 15
 #define NUM_INTERMEDIATE_NODES 5
@@ -31,7 +29,6 @@ double a_star(Node nodes[], const int num_nodes, Edge edges[], const int num_edg
    //SHA: OPEN and CLOSED sets
    int *open_set = calloc(num_nodes, sizeof(int));  //SHA: 1 if in OPEN, 0 otherwise
    int *closed_set = calloc(num_nodes, sizeof(int)); //SHA: 1 if in CLOSED, 0 otherwise
-
    //SHA: g(node) and f(node) scores
    double *g_score = malloc(num_nodes * sizeof(double));
    double *f_score = malloc(num_nodes * sizeof(double));
@@ -49,7 +46,8 @@ double a_star(Node nodes[], const int num_nodes, Edge edges[], const int num_edg
    open_set[start] = 1;
 
     int while_counter = 0;
-    while (1) {
+    while (while_counter < INF - 1000) {
+        while_counter++;
         //SHA: Find node in OPEN with lowest f(node)
         int current = -1;
         double min_f_score = INF;
@@ -115,32 +113,47 @@ double a_star(Node nodes[], const int num_nodes, Edge edges[], const int num_edg
     }
 }
 
-void print_nodes(unsigned int num_nodes, const Node nodes[]) {
+void print_nodes(const unsigned int num_nodes, const Node nodes[]) {
     printf("Nodes (ID, X, Y):\n");
     for (unsigned int i = 0; i < num_nodes; i++) {
-        printf("Node ID: %d, X: %.2f, Y: %.2f\n", nodes[i].id, nodes[i].x, nodes[i].y);
+        printf("Node ID: %d, X: %.2f, Y: %.2f\n",
+            nodes[i].id,
+            nodes[i].x,
+            nodes[i].y
+            );
     }
 
     printf("\nMain Nodes:\n");
     for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
         const int main_node_id = i * NUM_INTERMEDIATE_NODES; //SHA: First intermediate node for each main node
-        printf("Main Node %d -> Node ID: %d, X: %.2f, Y: %.2f\n", i, nodes[main_node_id].id, nodes[main_node_id].x, nodes[main_node_id].y);
+        printf("Main Node %d -> Node ID: %d, X: %.2f, Y: %.2f\n",
+            i, nodes[main_node_id].id,
+            nodes[main_node_id].x, nodes[main_node_id].y
+            );
     }
 
     printf("\nIntermediate Nodes:\n");
     for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
         for (unsigned int j = 0; j < NUM_INTERMEDIATE_NODES; j++) {
             const int intermediate_node_id = i * NUM_INTERMEDIATE_NODES + j;
-            printf("Intermediate Node (%d-%d) -> Node ID: %d, X: %.2f, Y: %.2f\n", i, j, nodes[intermediate_node_id].id, nodes[intermediate_node_id].x, nodes[intermediate_node_id].y);
+            printf("Intermediate Node (%d-%d) -> Node ID: %d, X: %.2f, Y: %.2f\n",
+                i, j,
+                nodes[intermediate_node_id].id,
+                nodes[intermediate_node_id].x,
+                nodes[intermediate_node_id].y
+                );
         }
     }
 }
 
-void print_a_star_results(const double** main_node_distances) {
+void print_a_star_results(const double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES]) {
     printf("\nShortest Paths Between Main Nodes:\n");
     for (int i = 0; i < NUM_MAIN_NODES; i++) {
         for (int j = 0; j < NUM_MAIN_NODES; j++) {
-            printf("Distance from Main Node %d to Main Node %d: %.2f\n", i, j, main_node_distances[i][j]);
+            printf("Distance from Main Node %d to Main Node %d: %.2f\n",
+                i, j,
+                main_node_distances[i][j]
+                );
         }
     }
 }
@@ -165,88 +178,3 @@ void populate_edges(Edge edges[], Node nodes[], const unsigned int num_nodes) {
         }
     }
 }
-
-/*
-//SHA: Main function
-int main() {
-   srand(time(NULL)); //SHA: Seed the random number generator with the current time
-
-
-   //SHA: Define the intermediate graph
-   int num_nodes = NUM_INTERMEDIATE_NODES * NUM_MAIN_NODES;
-   Node nodes[num_nodes];
-   Edge edges[num_nodes * num_nodes];
-
-
-   //SHA: Populate nodes with random coordinates
-   for (int i = 0; i < num_nodes; i++) {
-       nodes[i].id = i;
-       nodes[i].x = rand() % GRID_WIDTH;
-       nodes[i].y = rand() % GRID_HEIGHT;
-   }
-
-
-   //SHA: Print all nodes
-   printf("Nodes (ID, X, Y):\n");
-   for (int i = 0; i < num_nodes; i++) {
-       printf("Node ID: %d, X: %.2f, Y: %.2f\n", nodes[i].id, nodes[i].x, nodes[i].y);
-   }
-
-
-
-
-   //SHA: Separate and print main nodes and intermediate nodes
-   printf("\nMain Nodes:\n");
-   for (int i = 0; i < NUM_MAIN_NODES; i++) {
-       int main_node_id = i * NUM_INTERMEDIATE_NODES; //SHA: First intermediate node for each main node
-       printf("Main Node %d -> Node ID: %d, X: %.2f, Y: %.2f\n", i, nodes[main_node_id].id, nodes[main_node_id].x, nodes[main_node_id].y);
-   }
-
-
-
-
-   printf("\nIntermediate Nodes:\n");
-   for (int i = 0; i < NUM_MAIN_NODES; i++) {
-       for (int j = 0; j < NUM_INTERMEDIATE_NODES; j++) {
-           int intermediate_node_id = i * NUM_INTERMEDIATE_NODES + j;
-           printf("Intermediate Node (%d-%d) -> Node ID: %d, X: %.2f, Y: %.2f\n", i, j, nodes[intermediate_node_id].id, nodes[intermediate_node_id].x, nodes[intermediate_node_id].y);
-       }
-   }
-
-
-
-
-   //SHA: Populate edges with costs
-   int edge_count = 0;
-   for (int i = 0; i < num_nodes; i++) {
-       for (int j = i + 1; j < num_nodes; j++) {
-           edges[edge_count].start = i;
-           edges[edge_count].end = j;
-           edges[edge_count].cost = euclidean_heuristic(nodes[i], nodes[j]);
-           edge_count++;
-       }
-   }
-
-   //SHA: Calculate the shortest path between main nodes
-   double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES];
-   for (int i = 0; i < NUM_MAIN_NODES; i++) {
-       for (int j = i + 1; j < NUM_MAIN_NODES; j++) {
-           int start = i * NUM_INTERMEDIATE_NODES;
-           int goal = j * NUM_INTERMEDIATE_NODES + NUM_INTERMEDIATE_NODES - 1;
-           main_node_distances[i][j] = a_star(nodes, num_nodes, edges, edge_count, start, goal);
-           main_node_distances[j][i] = main_node_distances[i][j]; //SHA: Symmetric
-       }
-   }
-
-
-   //SHA: Print results
-   printf("\nShortest Paths Between Main Nodes:\n");
-   for (int i = 0; i < NUM_MAIN_NODES; i++) {
-       for (int j = 0; j < NUM_MAIN_NODES; j++) {
-           printf("Distance from Main Node %d to Main Node %d: %.2f\n", i, j, main_node_distances[i][j]);
-       }
-   }
-
-
-   return 0;
-}*/
