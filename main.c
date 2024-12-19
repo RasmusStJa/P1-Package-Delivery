@@ -40,12 +40,12 @@ int main() {
     //SHA: Print results & calculate the shortest path between main nodes
     //print_a_star_results(shortest_distance_main_nodes(nodes, edges));
 
-    printf("Held-karp:\n");
+    printf("\nHeld-karp:\n");
     const int pos = 0;
-    const int h_k_result = held_karp(main_node_distances, 1 << pos, pos, 0);
-    printf("The shortest route has cost: %d\n", h_k_result);
-    printf("Here's the optimal route:\n");
+    const double h_k_cost = held_karp(main_node_distances, 1 << pos, pos, 0);
+    printf("Optimal route:\n");
     print_held_karp_route(pos, " -> ");
+    printf("Cost: %.2f\n", h_k_cost);
 
     return 0;
 }

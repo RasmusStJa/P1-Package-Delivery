@@ -103,7 +103,6 @@ double a_star(Node nodes[], const int num_nodes, Edge edges[], const int num_edg
                     continue;
                 }
 
-
                //SHA: Record path and scores
                came_from[neighbor] = current;
                g_score[neighbor] = tentative_g_score;
@@ -127,8 +126,8 @@ void print_nodes(const unsigned int num_nodes, const Node nodes[]) {
     for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
         const int main_node_id = i * NUM_INTERMEDIATE_NODES; //SHA: First intermediate node for each main node
         printf("Main Node %d -> Node ID: %d, X: %.2f, Y: %.2f\n",
-            i, nodes[main_node_id].id,
-            nodes[main_node_id].x, nodes[main_node_id].y
+            i,
+            nodes[main_node_id].id, nodes[main_node_id].x, nodes[main_node_id].y
             );
     }
 
@@ -146,16 +145,44 @@ void print_nodes(const unsigned int num_nodes, const Node nodes[]) {
     }
 }
 
+void printMatrix(const double matrix[NUM_MAIN_NODES][NUM_MAIN_NODES]) {
+    //RAS: print every node in the same line
+    printf("     "); //RAS: formatting
+    for (unsigned int i = 0; i < NUM_MAIN_NODES; i++) {
+        printf("%d     ", i);
+        //RAS: if less than 2 characters, add a space
+        if (i < 10) { printf(" "); }
+    }
+    printf("\n");
+    for (unsigned int y = 0; y < NUM_MAIN_NODES; y++) { //RAS: column
+        for (unsigned int x = 0; x < NUM_MAIN_NODES; x++) { //RAS: row
+            //RAS: at start of each line print index
+            if (x == 0) {
+                //RAS: compensate for the extra space
+                if (y < 10) { printf(" "); }
+                printf("%d  ", y);
+            }
+            if (matrix[y][x] < 10) { printf(" "); }
+            printf("%.2f  ", matrix[x][y]);
+        }
+        printf("\n");
+    }
+}
+
 void print_a_star_results(const double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES]) {
     printf("\nShortest Paths Between Main Nodes:\n");
+    printMatrix(main_node_distances);
+    /*
     for (int i = 0; i < NUM_MAIN_NODES; i++) {
         for (int j = 0; j < NUM_MAIN_NODES; j++) {
+            //RAS: Skip because a node's distance to itself will always be 0
+            if (i == j) { continue; }
             printf("Distance from Main Node %d to Main Node %d: %.2f\n",
                 i, j,
                 main_node_distances[i][j]
                 );
         }
-    }
+    }*/
 }
 
 void populate_nodes(Node nodes[], const unsigned int num_nodes) {
