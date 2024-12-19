@@ -96,3 +96,10 @@
 7	139	7563294517364532	CMakeFiles/P1_Package_Delivery.dir/main.c.obj	66d991388e31baf7
 15	140	7563294517448136	CMakeFiles/P1_Package_Delivery.dir/held-karp.c.obj	fd6fc3b67a930244
 140	279	7563294518701693	P1_Package_Delivery.exe	fbeab396121f561b
+14	130	7563303023974442	CMakeFiles/P1_Package_Delivery.dir/held-karp.c.obj	fd6fc3b67a930244
+6	138	7563303023890272	CMakeFiles/P1_Package_Delivery.dir/main.c.obj	66d991388e31baf7
+138	267	7563303025217935	P1_Package_Delivery.exe	fbeab396121f561b
+22	334	7563426768213134	CMakeFiles/P1_Package_Delivery.dir/main.c.obj	66d991388e31baf7
+36	339	7563426768348607	CMakeFiles/P1_Package_Delivery.dir/held-karp.c.obj	fd6fc3b67a930244
+48	398	7563426768472310	CMakeFiles/P1_Package_Delivery.dir/a-star.c.obj	7644151f05df490a
+398	901	7563426771974137	P1_Package_Delivery.exe	fbeab396121f561b

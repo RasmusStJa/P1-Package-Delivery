@@ -6,9 +6,6 @@
 #define A_STAR_H
 #define NUM_MAIN_NODES 15
 #define NUM_INTERMEDIATE_NODES 5
-//#define INF INT_MAX
-#define GRID_WIDTH 30
-#define GRID_HEIGHT 30
 
 typedef struct {
     int id;

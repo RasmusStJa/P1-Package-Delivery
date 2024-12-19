@@ -3,20 +3,14 @@
 #include <stdlib.h>
 #include "a-star.h"
 
-#define MAX_LOCATIONS 20 //ABD: Jeg har taget udgangspunkt i eksemplet, som består af 4 lokationer, dette skal ændres når matri
-
+#define MAX_LOCATIONS 20
 #define INF INT_MAX
-/*ABD:
- *Definerer INF som den største mulige integer-værdi (INT_MAX).
- *Det bruges til at repræsentere "uendelig", når en sti ikke er
- *mulig. */
 
-int dp[1 << NUM_MAIN_NODES][NUM_MAIN_NODES]; //ABD: matrix, der gemmer de mindste omkostninger.
-int parents[1 << NUM_MAIN_NODES][NUM_MAIN_NODES]; //RAS: matrix of chosen path
-int n = NUM_MAIN_NODES; //ABD: Beregner , som bruges til at repræsentere alle mulige undergrupper af lokationer.
+int dp[1 << NUM_MAIN_NODES][NUM_MAIN_NODES]; //lowest costs
+int parents[1 << NUM_MAIN_NODES][NUM_MAIN_NODES]; //matrix of chosen path
+int n = NUM_MAIN_NODES; //represents subgroups of locations
 
-//ABD
-double held_karp(double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES], int mask, const int pos, unsigned int iteration) {
+double held_karp(double main_node_distances[NUM_MAIN_NODES][NUM_MAIN_NODES], const int mask, const int pos, unsigned int iteration) {
     if (iteration == 0) {
         for (unsigned int i = 0; i < (1 << n); i++) {
             for (unsigned int j = 0; j < n; j++) {
@@ -57,16 +51,16 @@ void print_held_karp_route(int pos, const char between[]) {
 
     printf("%d%s", start, between);
 
-    //RAS: print for every node
+    //print for every node
     while (mask != (1 << n) - 1) {
-        //RAS: while all destinations haven't been visited
-        const int nextDest = parents[mask][pos]; //RAS: get next city
+        //while all destinations haven't been visited
+        const int nextDest = parents[mask][pos]; //get next destination
 
         printf("%d%s", nextDest, between);
 
-        mask |= 1 << nextDest; //RAS: mark as visited
-        pos = nextDest; //RAS: update position
+        mask |= 1 << nextDest; //mark as visited
+        pos = nextDest; //update position
     }
-    //RAS: go back to the start
+    //go back to the start
     printf("%d\n", start);
 }
