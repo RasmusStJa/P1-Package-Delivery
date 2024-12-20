@@ -1,6 +1,3 @@
-//
-// Created by rasmu on 11-12-2024.
-//
 
 #ifndef HELD_KARP_H
 #define HELD_KARP_H
