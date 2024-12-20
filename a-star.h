@@ -1,7 +1,3 @@
-//
-// Created by Rasmus on 11-12-2024.
-//
-
 #ifndef A_STAR_H
 #define A_STAR_H
 #define NUM_MAIN_NODES 15
